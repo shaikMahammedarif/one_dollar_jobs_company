@@ -347,10 +347,37 @@ class AIHawkEasyApplier:
 
     def _process_form_element(self, element: WebElement, job) -> None:
         logger.debug("Processing form element")
-        if self._is_upload_field(element):
-            self._handle_upload_fields(element, job)
-        else:
-            self._fill_additional_questions()
+    #     if self._is_upload_field(element):
+    #         self._handle_upload_fields(element, job)
+    #     else:
+    #         self._fill_additional_questions()
+    # def _process_form_element(self, element: WebElement, job) -> None:
+    # logger.debug("Processing form element")
+    
+    try:
+        # Check if the element contains a dropdown for the country code
+        country_dropdown = element.find_element(By.TAG_NAME, 'select')
+        select = Select(country_dropdown)
+        select.select_by_value("+91")  # Assuming India code is '+91'
+        logger.debug("Country code '+91' selected")
+        
+        # Locate the phone number input field and set the number
+        phone_input = element.find_element(By.XPATH, ".//input[@type='tel']")
+        phone_input.clear()
+        phone_input.send_keys("8555903625")  # Replace with variable if needed
+        logger.debug("Phone number entered successfully")
+        
+    except NoSuchElementException as e:
+        logger.error(f"Phone number or country code field not found: {e}")
+    except Exception as e:
+        logger.error(f"Error while entering phone number: {e}")
+
+        
+    except NoSuchElementException as e:
+        logger.error(f"Phone number or country code field not found: {e}")
+    except Exception as e:
+        logger.error(f"Error while entering phone number: {e}")
+
 
     def _handle_dropdown_fields(self, element: WebElement) -> None:
         logger.debug("Handling dropdown fields")
